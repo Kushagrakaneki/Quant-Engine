@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS ledger_entries;
+DROP TABLE IF EXISTS accounts;
+DROP TABLE IF EXISTS assets;
+DROP TABLE IF EXISTS users;
