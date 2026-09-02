@@ -7,12 +7,12 @@ import (
 	"time"
 
 	"github.com/Kushagrakaneki/Quant-Engine/internal/config"
+	
 	"github.com/Kushagrakaneki/Quant-Engine/pkg/security"
+
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 
-	"quant-engine/internal/config"
-	"quant-engine/pkg/security"
 )
 
 func main(){
