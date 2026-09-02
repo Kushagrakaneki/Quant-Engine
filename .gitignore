@@ -1,0 +1,16 @@
+# Environment variables / secrets
+.env
+.env.*
+!.env.example
+
+# Go
+/bin/
+/dist/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
