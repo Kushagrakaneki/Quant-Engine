@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	
 	"log"
 	"net/http"
 	"time"
@@ -9,6 +9,7 @@ import (
 	"github.com/Kushagrakaneki/Quant-Engine/internal/config"
 	
 	"github.com/Kushagrakaneki/Quant-Engine/pkg/security"
+	"github.com/Kushagrakaneki/Quant-Engine/internal/api"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -42,20 +43,19 @@ func main(){
 	r.Use(middleware.Logger)//writes about request
 	r.Use(middleware.Recoverer)//handles any panic problem to vaoid crashing whole server
 
-	r.Use(middleware.Timeout(60*time.Second))//A request shouldn't run longer than 60 seconds.
+	api.SetUpRoutes(r,jwtManager)
 
-	r.Get("/health",func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte(`{"status":"Quant-Lite Matcher is ALIVE"}`))
-	})
+	srv:=&http.Server{
+		Addr:":"+cfg.Port,
+		Handler:r,
+		ReadTimeout:  5 * time.Second,
+		WriteTimeout: 10 * time.Second,
+		IdleTimeout:  15 * time.Second,
+	}
 
-	port:=":"+cfg.Port
-	fmt.Printf("Starting Quant-Lite Trading Engine on port %s...\n", cfg.Port)
-
-	err=http.ListenAndServe(port,r)
-
-	if err!=nil{
-		log.Fatalf("CRITICAL: Server crashed: %v\n", err)
+	log.Printf("Quant-Lite Trading Gateway online on port %s", cfg.Port)
+	if err := srv.ListenAndServe(); err != nil {
+		log.Fatalf("Server crashed: %v", err)
 	}
 
 
